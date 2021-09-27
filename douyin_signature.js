@@ -6,9 +6,7 @@ function make_signature(input){
         return k
     }
     
-    function char_loop(str){
-        offset = 24
-    
+    function char_loop(str, offset=24){
         for(;;){
             v = (str >> offset) & 63
             if (v < 26){
@@ -51,10 +49,14 @@ function make_signature(input){
     tmp = tmp1 | tmp2
     char_loop(tmp)
     
+    k1 = 311735490 ^ v1 // From the canvas, it's a const.
+
     tmp1 = v2 << 26
-    tmp2 = (-1 ^ v1) >>> 6
+    tmp2 = k1 >>> 6
     tmp = tmp1 | tmp2
     char_loop(tmp)
+
+    char_loop(k1, 0)
     
     k1 = str_loop(input, k0)
     tmp1 = k1 % constNum
